@@ -1,6 +1,7 @@
 package br.edu.ifsul.tads.aulas_tads.api.produtos;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,6 +23,7 @@ public class ProdutoController {
         return "selectByNome " + nome;
     }
     @PostMapping
+    @Secured({"ROLE_ADMIN"})
     public String insert(@RequestBody Produto produto){
         return "insert " + produto;
     }
