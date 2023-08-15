@@ -24,5 +24,5 @@ public class Produto {
     private Byte situacao;
     private Integer quantidade;
     @OneToMany(mappedBy = "produto")
-    private Collection<Iten> itens;
+    private Collection<Item> items;
 }

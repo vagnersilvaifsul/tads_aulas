@@ -25,7 +25,7 @@ public class Pedido {
     private Byte situacao;
     private BigDecimal totalPedido;
     @OneToMany(mappedBy = "pedido")
-    private Collection<Iten> itens;
+    private Collection<Item> items;
     @ManyToOne
     @JoinColumn(name = "id_cliente", referencedColumnName = "id", nullable = false)
     private Cliente cliente;

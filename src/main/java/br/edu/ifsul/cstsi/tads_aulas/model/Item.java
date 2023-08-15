@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Iten {
+public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
