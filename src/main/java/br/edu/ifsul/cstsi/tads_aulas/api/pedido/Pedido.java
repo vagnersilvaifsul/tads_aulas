@@ -1,5 +1,7 @@
-package br.edu.ifsul.cstsi.tads_aulas.model;
+package br.edu.ifsul.cstsi.tads_aulas.api.pedido;
 
+import br.edu.ifsul.cstsi.tads_aulas.api.cliente.Cliente;
+import br.edu.ifsul.cstsi.tads_aulas.api.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
