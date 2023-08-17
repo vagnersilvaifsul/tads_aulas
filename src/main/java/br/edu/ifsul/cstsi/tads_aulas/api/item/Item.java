@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "itens", schema = "lpoo_vendas_jdbc", catalog = "")
+@Table(name = "itens")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

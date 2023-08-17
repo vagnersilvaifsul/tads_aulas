@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "clientes", schema = "lpoo_vendas_jdbc", catalog = "")
+@Table(name = "clientes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

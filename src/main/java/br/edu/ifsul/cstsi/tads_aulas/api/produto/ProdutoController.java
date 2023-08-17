@@ -3,13 +3,10 @@ package br.edu.ifsul.cstsi.tads_aulas.api.produto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1/produtos")
 public class ProdutoController {
-    @GetMapping
+    @GetMapping //api/v1/produtos
     public ResponseEntity<String> selectAll() {
         return ResponseEntity.ok("selectAll()");
     }
@@ -24,17 +21,17 @@ public class ProdutoController {
         return ResponseEntity.ok("selectByName() " + nome);
     }
 
-    @PostMapping
+    @PostMapping //api/v1/produtos
     public ResponseEntity<String> insert(@RequestBody Produto produto){
         return ResponseEntity.ok("insert() " + produto);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("{id}") //api/v1/produtos/1
     public ResponseEntity<String> update(@PathVariable("id") Long id, @RequestBody Produto produto){
-        return ResponseEntity.ok("update() " + id);
+        return ResponseEntity.ok("update() " + id + "\n" + produto);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{id}") //api/v1/produtos/1
     public ResponseEntity<String> delete(@PathVariable("id") Long id){
         return ResponseEntity.ok("delete() " + id);
     }

@@ -12,7 +12,7 @@ import java.sql.Date;
 import java.util.Collection;
 
 @Entity
-@Table(name = "pedidos", schema = "lpoo_vendas_jdbc", catalog = "")
+@Table(name = "pedidos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

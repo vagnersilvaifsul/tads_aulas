@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 @Entity
-@Table(name = "produtos", schema = "lpoo_vendas_jdbc", catalog = "")
+@Table(name = "produtos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
