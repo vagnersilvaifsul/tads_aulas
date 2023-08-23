@@ -26,6 +26,13 @@ public class ProdutoService {
         return produto.map(ProdutoDTO::create).orElse(null);
     }
 
+    public List<ProdutoDTO> getProdutosByNome(String nome) {
+        return rep.findByNome(nome+"%")
+            .stream()
+            .map(ProdutoDTO::create)
+            .collect(Collectors.toList());
+    }
+
     public ProdutoDTO insert(Produto produto) {
         Assert.isNull(produto.getId(),"Não foi possível inserir o registro");
         return ProdutoDTO.create(rep.save(produto));

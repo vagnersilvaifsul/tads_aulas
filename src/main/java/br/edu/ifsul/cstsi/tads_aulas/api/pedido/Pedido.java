@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Collection;
 
-@Entity
-@Table(name = "pedidos")
+@Entity(name = "pedidos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +28,6 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido")
     private Collection<Item> items;
     @ManyToOne
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
     private Cliente cliente;
 }

@@ -9,8 +9,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
 
-@Entity
-@Table(name = "produtos")
+@Entity(name = "produtos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

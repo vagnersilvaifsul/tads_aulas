@@ -30,8 +30,11 @@ public class ProdutoController {
     }
 
     @GetMapping("/nome/{nome}") //api/v1/produtos/nome/arroz
-    public ResponseEntity<String> selectByName(@PathVariable("nome") String nome) {
-        return ResponseEntity.ok("selectByName() " + nome);
+    public ResponseEntity<List<ProdutoDTO>> selectByName(@PathVariable("nome") String nome) {
+        List<ProdutoDTO> produtos = service.getProdutosByNome(nome);
+        return produtos.isEmpty() ?
+            ResponseEntity.noContent().build() :
+            ResponseEntity.ok(produtos);
     }
 
     @Secured({"ROLE_ADMIN"})
@@ -53,7 +56,6 @@ public class ProdutoController {
 
     @DeleteMapping("{id}") //api/v1/produtos/1
     public ResponseEntity<String> delete(@PathVariable("id") Long id){
-        ;
         return service.delete(id) ?
             ResponseEntity.ok().build() :
             ResponseEntity.notFound().build();

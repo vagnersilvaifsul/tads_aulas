@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "itens")
+@Entity(name = "itens")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,9 +21,9 @@ public class Item {
     private BigDecimal totalItem;
     private Byte situacao;
     @ManyToOne
-    @JoinColumn(name = "id_pedido", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "pedido_id", referencedColumnName = "id", nullable = false)
     private Pedido pedido;
     @ManyToOne
-    @JoinColumn(name = "id_produto", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "produto_id", referencedColumnName = "id", nullable = false)
     private Produto produto;
 }
