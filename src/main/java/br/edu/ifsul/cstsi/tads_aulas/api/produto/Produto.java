@@ -21,7 +21,7 @@ public class Produto {
     private BigDecimal valorDeCompra;
     private BigDecimal valorDeVenda;
     private String descricao;
-    private Byte situacao;
+    private Boolean situacao;
     private Integer quantidade;
     @OneToMany(mappedBy = "produto")
     private Collection<Item> items;
