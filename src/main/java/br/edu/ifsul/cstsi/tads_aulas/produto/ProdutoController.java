@@ -13,21 +13,22 @@ import java.util.List;
 @RequestMapping("/api/v1/produtos")
 public class ProdutoController {
 
-    @Autowired //TODO: Mostrar como injetar corretamente as dependências no Controller
+    //Todo Mostrar como injetar corretamente as dependências no Controller
+    @Autowired
     private ProdutoRepository produtoRepository;
 
     @GetMapping
-    public ResponseEntity<List<Produto>> getAll(){
+    public ResponseEntity<List<Produto>> findAll() {
         return ResponseEntity.ok(produtoRepository.findAll());
     }
 
     @GetMapping("{id}") //URL_BASE:8080/api/v1/produtos/1
-    public String getById(@PathVariable("id") Long id){
+    public String getById(@PathVariable("id") Long id) {
         return "Produto de id=" + id;
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Produto>> selectByNome(@PathVariable("nome") String nome) {
+    public ResponseEntity<List<Produto>> finByNome(@PathVariable("nome") String nome) {
         var produtos = produtoRepository.findByNome(nome);
         return produtos.isEmpty() ?
                 ResponseEntity.noContent().build() :
@@ -35,7 +36,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<URI> insert(@RequestBody Produto produto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<URI> insert(@RequestBody Produto produto, UriComponentsBuilder uriBuilder) {
         produto.setId(null);
         var p = produtoRepository.save(produto);
         var location = uriBuilder.path("api/v1/produtos/{id}").buildAndExpand(p.getId()).toUri();
@@ -43,9 +44,9 @@ public class ProdutoController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody Produto produto){
+    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody Produto produto) {
         var optional = produtoRepository.findById(id);
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             var p = produtoRepository.save(produto);
             return ResponseEntity.ok(p);
         }
@@ -54,11 +55,11 @@ public class ProdutoController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id){
+    public ResponseEntity<Long> delete(@PathVariable("id") Long id) {
         var optional = produtoRepository.findById(id);
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             produtoRepository.deleteById(id);
-            ResponseEntity.ok().build();
+            ResponseEntity.ok(id);
         }
         return ResponseEntity.notFound().build();
     }
