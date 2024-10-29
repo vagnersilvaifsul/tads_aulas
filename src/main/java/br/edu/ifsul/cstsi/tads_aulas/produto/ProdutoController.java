@@ -52,4 +52,14 @@ public class ProdutoController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id){
+        var optional = produtoRepository.findById(id);
+        if(optional.isPresent()){
+            produtoRepository.deleteById(id);
+            ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
