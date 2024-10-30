@@ -1,7 +1,6 @@
 package br.edu.ifsul.cstsi.tads_aulas.produto;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,9 +12,11 @@ import java.util.List;
 @RequestMapping("/api/v1/produtos")
 public class ProdutoController {
 
-    //Todo Mostrar como injetar corretamente as dependências no Controller
-    @Autowired
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
+
+    public ProdutoController(ProdutoRepository produtoRepository) {
+        this.produtoRepository = produtoRepository;
+    }
 
     @GetMapping
     public ResponseEntity<List<Produto>> findAll() {
@@ -23,8 +24,12 @@ public class ProdutoController {
     }
 
     @GetMapping("{id}") //URL_BASE:8080/api/v1/produtos/1
-    public String getById(@PathVariable("id") Long id) {
-        return "Produto de id=" + id;
+    public ResponseEntity<Produto> findById(@PathVariable("id") Long id) {
+        var optional = produtoRepository.findById(id);
+        if (optional.isPresent()) {
+            return ResponseEntity.ok(optional.get());
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/nome/{nome}")
@@ -36,18 +41,35 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<URI> insert(@RequestBody Produto produto, UriComponentsBuilder uriBuilder) {
-        produto.setId(null);
-        var p = produtoRepository.save(produto);
+    public ResponseEntity<URI> insert(@RequestBody ProdutoDto produtoDTO, UriComponentsBuilder uriBuilder) {
+        var p = produtoRepository.save(new Produto(
+                null,
+                produtoDTO.nome(),
+                produtoDTO.valorDeCompra(),
+                produtoDTO.valorDeVenda(),
+                produtoDTO.descricao(),
+                produtoDTO.situacao(),
+                produtoDTO.estoque(),
+                null
+        ));
         var location = uriBuilder.path("api/v1/produtos/{id}").buildAndExpand(p.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody Produto produto) {
+    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody ProdutoDto produtoDTO) {
         var optional = produtoRepository.findById(id);
         if (optional.isPresent()) {
-            var p = produtoRepository.save(produto);
+            var p = produtoRepository.save(new Produto(
+                    id,
+                    produtoDTO.nome(),
+                    produtoDTO.valorDeCompra(),
+                    produtoDTO.valorDeVenda(),
+                    produtoDTO.descricao(),
+                    produtoDTO.situacao(),
+                    produtoDTO.estoque(),
+                    null
+            ));
             return ResponseEntity.ok(p);
         }
 
@@ -59,7 +81,7 @@ public class ProdutoController {
         var optional = produtoRepository.findById(id);
         if (optional.isPresent()) {
             produtoRepository.deleteById(id);
-            ResponseEntity.ok(id);
+            return ResponseEntity.ok(id);
         }
         return ResponseEntity.notFound().build();
     }
