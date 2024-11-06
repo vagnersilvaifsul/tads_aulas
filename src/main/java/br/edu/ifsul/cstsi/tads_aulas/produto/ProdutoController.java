@@ -19,25 +19,25 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> findAll() {
-        return ResponseEntity.ok(produtoRepository.findAll());
+    public ResponseEntity<List<ProdutoDto>> findAll() {
+        return ResponseEntity.ok(produtoRepository.findAll().stream().map(ProdutoDto::new).toList());
     }
 
     @GetMapping("{id}") //URL_BASE:8080/api/v1/produtos/1
-    public ResponseEntity<Produto> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<ProdutoDto> findById(@PathVariable("id") Long id) {
         var optional = produtoRepository.findById(id);
         if (optional.isPresent()) {
-            return ResponseEntity.ok(optional.get());
+            return ResponseEntity.ok(new ProdutoDto(optional.get()));
         }
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Produto>> finByNome(@PathVariable("nome") String nome) {
+    public ResponseEntity<List<ProdutoDto>> finByNome(@PathVariable("nome") String nome) {
         var produtos = produtoRepository.findByNome(nome);
         return produtos.isEmpty() ?
                 ResponseEntity.noContent().build() :
-                ResponseEntity.ok(produtos);
+                ResponseEntity.ok(produtos.stream().map(ProdutoDto::new).toList());
     }
 
     @PostMapping
@@ -57,7 +57,7 @@ public class ProdutoController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody ProdutoDto produtoDTO) {
+    public ResponseEntity<ProdutoDto> update(@PathVariable("id") Long id, @RequestBody ProdutoDto produtoDTO) {
         var optional = produtoRepository.findById(id);
         if (optional.isPresent()) {
             var p = produtoRepository.save(new Produto(
@@ -70,18 +70,18 @@ public class ProdutoController {
                     produtoDTO.estoque(),
                     null
             ));
-            return ResponseEntity.ok(p);
+            return ResponseEntity.ok(new ProdutoDto(p));
         }
 
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Long> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<ProdutoDto> delete(@PathVariable("id") Long id) {
         var optional = produtoRepository.findById(id);
         if (optional.isPresent()) {
             produtoRepository.deleteById(id);
-            return ResponseEntity.ok(id);
+            return ResponseEntity.ok(new ProdutoDto(optional.get()));
         }
         return ResponseEntity.notFound().build();
     }
