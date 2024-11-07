@@ -5,7 +5,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,10 +15,14 @@ import java.io.IOException;
 @Component //indica que essa classe deve ser adicionada ao Contexto do aplicativo como um Bean de Configuração
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired //indica ao Spring Boot que ele deve injetar essa dependência para a classe funcionar
-    private TokenService tokenService;
-    @Autowired //indica ao Spring Boot que ele deve injetar essa dependência para a classe funcionar
-    private AutenticacaoRepository repository;
+    private final TokenService tokenService;
+    private final AutenticacaoRepository repository;
+
+    //O SB identifica as dependências e injeta a partir do Context do app
+    public SecurityFilter(TokenService tokenService, AutenticacaoRepository repository) {
+        this.tokenService = tokenService;
+        this.repository = repository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
