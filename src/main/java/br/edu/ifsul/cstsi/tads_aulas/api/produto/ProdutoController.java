@@ -1,6 +1,7 @@
 package br.edu.ifsul.cstsi.tads_aulas.api.produto;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ public class ProdutoController {
     }
 
     @GetMapping("{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Produto> getProdutoById(@PathVariable("id") Long id) {
         var produto = produtoRepository.findById(id);
         return produto.isEmpty() ? ResponseEntity.notFound().build() :  ResponseEntity.ok().body(produto.get()) ;

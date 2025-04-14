@@ -20,7 +20,6 @@ public class AutenticacaoController {
 
     @PostMapping("api/v1/login")
     public ResponseEntity<String> efetuarLogin(@RequestBody UsuarioAutenticacaoDTO data){
-        System.out.println(data);
         var authenticationDTO = new UsernamePasswordAuthenticationToken(data.usuario(), data.senha());
         var authentication = manager.authenticate(authenticationDTO);
         return ResponseEntity.ok("Autenticou");
