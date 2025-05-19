@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping
@@ -24,7 +25,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("api/v1/login")
-    public ResponseEntity<TokenJwtDTO> efetuarLogin(@RequestBody UsuarioAutenticacaoDTO data){
+    public ResponseEntity<TokenJwtDTO> efetuarLogin(@RequestBody @Valid UsuarioAutenticacaoDTO data){
         var authenticationDTO = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         var authentication = manager.authenticate(authenticationDTO);
         var tokenJWT = tokenService.geraToken((Usuario) authentication.getPrincipal()); //gera o token JWT para enviar na response
