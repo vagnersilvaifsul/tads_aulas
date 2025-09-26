@@ -1,4 +1,4 @@
-package br.edu.ifsul.cstsi.tads_aulas.model;
+package br.edu.ifsul.cstsi.tads_aulas.produto;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 
 @Entity(name = "Produto")
 @Table(name = "produtos")
@@ -25,6 +24,4 @@ public class Produto {
     private String descricao;
     private Boolean situacao;
     private Integer estoque;
-    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
-    private Collection<Item> items;
 }

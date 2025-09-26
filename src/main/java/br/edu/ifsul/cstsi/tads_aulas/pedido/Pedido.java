@@ -1,5 +1,6 @@
-package br.edu.ifsul.cstsi.tads_aulas.model;
+package br.edu.ifsul.cstsi.tads_aulas.pedido;
 
+import br.edu.ifsul.cstsi.tads_aulas.cliente.Cliente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
