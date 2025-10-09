@@ -19,8 +19,8 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> findAll(){
-        return ResponseEntity.ok(repository.findAll());
+    public ResponseEntity<List<ProdutoDtoResponse>> findAll(){
+        return ResponseEntity.ok(repository.findAll().stream().map(ProdutoDtoResponse::new).toList());
     }
 
     @GetMapping("{id}")

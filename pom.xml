@@ -68,6 +68,17 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.0.2</version>
         </dependency>
+
+        <!-- Para adicionar segurança no app -->
+        <!-- Spring Security é uma estrutura que fornece autenticação, autorização e proteção contra ataques comuns
+            https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.security -->
+        <!-- Configuração starter do Spring Security (o que vem configuradao por padrão)
+            https://docs.spring.io/spring-security/reference/servlet/getting-started.html#servlet-hello-auto-configuration
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
