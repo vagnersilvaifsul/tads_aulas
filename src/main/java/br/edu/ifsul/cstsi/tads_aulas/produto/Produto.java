@@ -24,4 +24,13 @@ public class Produto {
     private String descricao;
     private Boolean situacao;
     private Integer estoque;
+
+    public Produto(String nome, BigDecimal valorDeCompra, BigDecimal valorDeVenda, String descricao, Integer estoque) {
+        this.nome = nome;
+        this.valorDeCompra = valorDeCompra;
+        this.valorDeVenda = valorDeVenda;
+        this.descricao = descricao;
+        this.situacao = true;
+        this.estoque = estoque;
+    }
 }

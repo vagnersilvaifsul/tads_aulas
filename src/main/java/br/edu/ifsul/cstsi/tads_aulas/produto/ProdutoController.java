@@ -1,11 +1,11 @@
 package br.edu.ifsul.cstsi.tads_aulas.produto;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -39,5 +39,44 @@ public class ProdutoController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(produtos);
+    }
+
+    @PostMapping
+    //@Secured({"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<URI> insert(@RequestBody ProdutoDTOPost produtoDTOPost, UriComponentsBuilder uriBuilder){
+        var p = repository.save(new Produto(
+                produtoDTOPost.nome(),
+                produtoDTOPost.valorDeCompra(),
+                produtoDTOPost.valorDeVenda(),
+                produtoDTOPost.descricao(),
+                produtoDTOPost.estoque()
+        ));
+        var location = uriBuilder.path("api/v1/produtos/{id}").buildAndExpand(p.getId()).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ProdutoDtoResponse> update(@PathVariable("id") Long id, @Valid @RequestBody ProdutoDTOPut produtoDTOPut){
+        var p = repository.save(new Produto(
+                id,
+                produtoDTOPut.nome(),
+                produtoDTOPut.valorDeCompra(),
+                produtoDTOPut.valorDeVenda(),
+                produtoDTOPut.descricao(),
+                produtoDTOPut.situacao(),
+                produtoDTOPut.estoque()
+        ));
+        return p != null ?
+                ResponseEntity.ok(new ProdutoDtoResponse(p)):
+                ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id){
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
