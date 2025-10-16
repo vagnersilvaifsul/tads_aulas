@@ -2,6 +2,7 @@ package br.edu.ifsul.cstsi.tads_aulas.produto;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -42,7 +43,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    //@Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<URI> insert(@RequestBody ProdutoDTOPost produtoDTOPost, UriComponentsBuilder uriBuilder){
         var p = repository.save(new Produto(
                 produtoDTOPost.nome(),
