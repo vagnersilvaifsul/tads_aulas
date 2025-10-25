@@ -28,7 +28,8 @@ public class Usuario implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuarios_perfis",
             joinColumns = @JoinColumn(name = "usuarios_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "perfis_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "perfis_id", referencedColumnName = "id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"usuarios_id", "perfis_id"}))
     private List<Perfil> perfis;
 
     @Override
