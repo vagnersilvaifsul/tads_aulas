@@ -1,0 +1,27 @@
+services:
+  java-app:
+    build: .
+    container_name: my-java-app
+    ports:
+      - "8080:8080" # Map host port 8080 to container port 8080
+    environment:
+      # Configure database connection details for your Java application
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/tads_aulas
+      SPRING_DATASOURCE_USERNAME: mariadb
+      SPRING_DATASOURCE_PASSWORD: mariadb
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:latest # Or a specific version like mariadb:10.6
+    container_name: my-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: mariadb
+      MYSQL_DATABASE: tads_aulas
+      MYSQL_USER: mariadb
+      MYSQL_PASSWORD: mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql # Persist MariaDB data
+
+volumes:
+  mariadb_data:
