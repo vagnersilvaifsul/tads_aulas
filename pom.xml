@@ -45,6 +45,12 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.3.2</version>
 		</dependency>
+        <!-- Para o data source no perfil Produção (conector do banco de dados) -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.2.0</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
