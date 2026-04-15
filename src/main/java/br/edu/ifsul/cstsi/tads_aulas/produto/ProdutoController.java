@@ -38,7 +38,7 @@ public class ProdutoController {
 
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Produto>> findByName(@PathVariable String nome){
-        Optional<List<Produto>> produtos = produtoRepository.findByNome(nome);
+        Optional<List<Produto>> produtos = produtoRepository.findByNomeQuerySpeakSQL(nome);
         if(produtos.isEmpty()){
             return ResponseEntity.notFound().build();
         }
