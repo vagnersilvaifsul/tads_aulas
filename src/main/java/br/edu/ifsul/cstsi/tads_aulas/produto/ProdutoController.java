@@ -1,11 +1,10 @@
 package br.edu.ifsul.cstsi.tads_aulas.produto;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +22,12 @@ public class ProdutoController {
 
 
     @GetMapping
-    public ResponseEntity<List<Produto>> findAll(){
-        return ResponseEntity.ok(produtoRepository.findAll());
+    public ResponseEntity<List<ProdutoDto>> findAll(){
+        return ResponseEntity.ok(
+                produtoRepository.findAll().stream() //1. criar um fluxo
+                        .map(ProdutoDto::new) //2. Realizar operações (neste caso, foi feito um mapeamento de um tipo para outro)
+                        .toList() //3. coleta a informação para uma estrutura de dados (no caso, List)
+        );
     }
 
     @GetMapping("/{id}")
@@ -43,5 +46,38 @@ public class ProdutoController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(produtos.get());
+    }
+
+    @PostMapping
+    public ResponseEntity<URI> save(@RequestBody ProdutoDtoPost produto, UriComponentsBuilder uriBuilder){
+        var p = produtoRepository.save(new Produto(
+                null,
+                produto.nome(),
+                produto.valorDeCompra(),
+                produto.valorDeVenda(),
+                produto.descricao(),
+                true,
+                produto.estoque()
+        ));
+        var location = uriBuilder.path("api/v1/produtos/{id}").buildAndExpand(p.getId()).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto produto){
+        produto.setId(id);
+        var p = produtoRepository.save(produto);
+        return p != null ?
+                ResponseEntity.ok(p) :
+                ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        if (produtoRepository.existsById(id)) {
+            produtoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

@@ -16,6 +16,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
         as três diferentes maneiras de buscar dados no banco de dados com Spring Data.
      */
 
+    //Domain Speak
     Optional<List<Produto>> findByNomeStartingWith(String nome);
 
     //Método em Query Speak (em JPQL). Note o nome da entidade Produto no JPQL, isso mostra que ele roda no JPA.
