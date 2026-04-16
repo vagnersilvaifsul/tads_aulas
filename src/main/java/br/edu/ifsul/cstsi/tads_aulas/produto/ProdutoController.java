@@ -64,9 +64,16 @@ public class ProdutoController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto produto){
-        produto.setId(id);
-        var p = produtoRepository.save(produto);
+    public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody ProdutoDtoPut produto){
+        var p = produtoRepository.save(new Produto(
+                id,
+                produto.nome(),
+                produto.valorDeCompra(),
+                produto.valorDeVenda(),
+                produto.descricao(),
+                produto.situacao(),
+                produto.estoque()
+        ));
         return p != null ?
                 ResponseEntity.ok(p) :
                 ResponseEntity.notFound().build();
