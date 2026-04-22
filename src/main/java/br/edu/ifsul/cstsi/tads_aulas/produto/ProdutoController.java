@@ -33,19 +33,19 @@ public class ProdutoController {
     @GetMapping("/{id}")
     public ResponseEntity<Produto> findById(@PathVariable Long id){
         Optional<Produto> produto = produtoRepository.findById(id);
-        if(produto.isEmpty()){
-            return ResponseEntity.notFound().build();
+        if(produto.isPresent()){
+            return ResponseEntity.ok(produto.get());
         }
-        return ResponseEntity.ok(produto.get());
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Produto>> findByName(@PathVariable String nome){
         Optional<List<Produto>> produtos = produtoRepository.findByNomeStartingWith(nome);
-        if(produtos.isEmpty()){
-            return ResponseEntity.notFound().build();
+        if(produtos.isPresent() && !produtos.get().isEmpty()){
+            return ResponseEntity.ok(produtos.get());
         }
-        return ResponseEntity.ok(produtos.get());
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
