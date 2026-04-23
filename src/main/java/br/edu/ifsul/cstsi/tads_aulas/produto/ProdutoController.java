@@ -1,6 +1,7 @@
 package br.edu.ifsul.cstsi.tads_aulas.produto;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -49,6 +50,7 @@ public class ProdutoController {
     }
 
     @PostMapping
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<URI> save(@RequestBody ProdutoDtoPost produto, UriComponentsBuilder uriBuilder){
         var p = produtoRepository.save(new Produto(
                 null,
