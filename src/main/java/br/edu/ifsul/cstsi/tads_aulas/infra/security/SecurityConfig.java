@@ -1,6 +1,5 @@
 package br.edu.ifsul.cstsi.tads_aulas.infra.security;
 
-import br.edu.ifsul.cstsi.tads_aulas.autenticacao.AutenticacaoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,18 +9,20 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private final AutenticacaoService autenticacaoService;
+    private final SecurityFilter securityFilter;
 
-    public SecurityConfig(AutenticacaoService autenticacaoService) {
-        this.autenticacaoService = autenticacaoService;
+    public SecurityConfig(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
     }
 
     @Bean
@@ -41,11 +42,12 @@ public class SecurityConfig {
         //Basic Authentication
         http
             .csrf(csrf -> csrf.disable()) //desabilita a proteção contra ataques Cross-site Request Forger
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> {
-                authorize.requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll(); //exceto, a rota de login
-                authorize.anyRequest().authenticated(); //demais rotas devem ser autenticadas
+            authorize.requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll(); //exceto, a rota de login
+            authorize.anyRequest().authenticated(); //demais rotas devem ser autenticadas
             })
-                .userDetailsService(autenticacaoService)
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .httpBasic(Customizer.withDefaults());
 
         return http.build();
